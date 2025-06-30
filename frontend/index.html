@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem E-Voting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <div class="max-w-xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-lg">
+        <h1 class="text-2xl font-bold text-center mb-6 text-blue-700">🗳️ Sistem E-Voting Blockchain</h1>
+
+        <div class="mb-4">
+            <h2 class="font-semibold mb-1">Login Akun Voter</h2>
+            <input id="privateKeyInput" type="text" placeholder="Masukkan Private Key"
+                class="w-full px-3 py-2 border rounded text-sm" />
+            <button onclick="loginWithPrivateKey()"
+                class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">🔑 Login</button>
+            <p id="account" class="mt-2 text-sm text-gray-600">Belum terhubung</p>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="font-semibold mb-1">Daftar Proposal</h2>
+            <ul id="proposalList" class="list-disc ml-5 text-sm"></ul>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="font-semibold mb-1">Pilih Proposal</h2>
+            <input id="proposalIndex" type="number" placeholder="Masukkan indeks proposal"
+                class="w-full px-3 py-2 border rounded text-sm" />
+            <button onclick="vote()"
+                class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">🗳️ Vote</button>
+            <p id="voteStatus" class="text-sm mt-2 text-gray-600">-</p>
+        </div>
+
+        <div class="mb-4">
+            <button onclick="getWinner()"
+                class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 text-sm">🎉 Cek Pemenang</button>
+            <p id="winnerName" class="mt-2 text-sm font-semibold text-purple-700">-</p>
+        </div>
+
+        <div class="mt-6">
+            <button id="rightToVoteBtn" onclick="giveRightToVote()" style="display:none;"
+                class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm">📝 Beri Hak
+                Suara</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.4/dist/ethers.umd.min.js"></script>
+    <script src="contract-address.js"></script>
+    <script src="abi.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
