@@ -36,6 +36,9 @@ async function loadProposals() {
 
 async function giveRightToVote() {
   const voterAddress = prompt("Masukkan alamat voter:");
+  console.log("Private key:", privateKey);
+  console.log("Voter address:", voterAddress);
+
   if (!privateKey || !voterAddress) {
     alert("Masukkan private key ketua dan alamat voter!");
     return;

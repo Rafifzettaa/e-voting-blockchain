@@ -51,6 +51,8 @@ app.get("/proposals", async (req, res) => {
 
 app.post("/give-right", async (req, res) => {
   const { chairPrivateKey, voterAddress } = req.body;
+  console.log("🛂 /give-right dipanggil dengan body:", req.body);
+
   try {
     const wallet = new ethers.Wallet(chairPrivateKey, provider);
     const contract = new ethers.Contract(contractAddress, abi, wallet);

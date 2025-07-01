@@ -1,7 +1,6 @@
 const fs = require("fs");
-const path = "./frontend/contract-address.js";
+const path = require("path");
 const privateFile = "./private.txt";
-const pathNew = "../backend/contract-address.js";
 
 async function main() {
   const [chairperson, ...voters] = await ethers.getSigners();
@@ -12,10 +11,16 @@ async function main() {
   const address = ballot.target;
   console.log("✅ Ballot deployed at:", address);
 
+  // Buat path untuk backend (CommonJS)
+  const backendPath = path.resolve(__dirname, "../backend/contract-address.js");
+  fs.writeFileSync(backendPath, `module.exports = "${address}";\n`);
   // Simpan ke file frontend
-  fs.writeFileSync(path, `const contractAddress = "${address}";\n`);
-  fs.writeFileSync(pathNew, `const contractAddress = "${address}";\n`);
-  console.log("📁 contract-address.js updated!");
+  // Buat path untuk frontend (browser script)
+  const frontendPath = path.resolve(
+    __dirname,
+    "../frontend/contract-address.js"
+  );
+  fs.writeFileSync(frontendPath, `const contractAddress = "${address}";\n`);
 
   // Simpan daftar voter + private key
   let privateLines = ["# Daftar Private Key untuk Voter"];
