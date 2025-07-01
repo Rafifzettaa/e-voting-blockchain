@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - E-Voting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800">
+  <div class="max-w-4xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-lg">
+    <h1 class="text-2xl font-bold text-center mb-6 text-blue-700">📊 Dashboard Admin E-Voting</h1>
+
+    <!-- Login -->
+    <div class="mb-6">
+      <label class="block text-sm font-medium mb-1">Private Key Admin</label>
+      <input id="adminPrivateKey" type="text" placeholder="Masukkan private key ketua"
+        class="w-full px-3 py-2 border rounded text-sm" />
+      <button onclick="loginAdmin()" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">
+        🔐 Login dan Tampilkan Data
+      </button>
+      <button id="logoutBtn" onclick="logoutAdmin()"
+        class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm hidden">
+        🚪 Logout
+      </button>
+
+      <p id="adminStatus" class="mt-2 text-sm text-gray-600">Belum terhubung</p>
+    </div>
+
+    <!-- Chart -->
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold mb-2">📈 Grafik Hasil Voting</h2>
+      <canvas id="voteChart" height="120"></canvas>
+    </div>
+
+    <!-- List Proposal -->
+    <div>
+      <h2 class="text-lg font-semibold mb-2">📋 Daftar Kandidat</h2>
+      <ul id="proposalStats" class="list-disc ml-5 text-sm"></ul>
+    </div>
+
+    <!-- Hak Suara -->
+    <div class="mt-6">
+      <button onclick="showVoterInput()" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm">
+        📝 Beri Hak Suara
+      </button>
+    </div>
+    <div id="voterInputSection" class="mt-4 hidden">
+      <label for="voterAddressInput" class="block text-sm font-medium mb-1">Alamat Voter</label>
+      <input id="voterAddressInput" type="text" placeholder="0x..."
+        class="w-full px-3 py-2 border rounded text-sm mb-2" />
+      <button onclick="submitRightToVote()"
+        class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
+        ✅ Kirim Hak Suara
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.4/dist/ethers.umd.min.js"></script>
+  <script src="../contract-address.js"></script>
+  <script src="../abi.js"></script>
+  <script src="script-admin.js"></script>
+</body>
+
+</html>
