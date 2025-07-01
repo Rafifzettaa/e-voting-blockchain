@@ -33,15 +33,17 @@
 
         <!-- Daftar Proposal -->
         <div class="mb-4">
-            <h2 class="font-semibold mb-1">Daftar Proposal</h2>
-            <ul id="proposalList" class="list-disc ml-5 text-sm"></ul>
+            <h2 class="font-semibold mb-1">Daftar Kandidat</h2>
+            <div id="proposalList" class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 text-sm"></div>
         </div>
 
         <!-- Voting -->
         <div class="mb-4">
             <h2 class="font-semibold mb-1">Pilih Proposal</h2>
-            <input id="proposalIndex" type="number" placeholder="Masukkan indeks proposal"
-                class="w-full px-3 py-2 border rounded text-sm" />
+            <select id="proposalSelect" class="w-full px-3 py-2 border rounded text-sm">
+                <option value="">Pilih kandidat</option>
+            </select>
+
             <button onclick="vote()" class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
                 🗳️ Vote
             </button>

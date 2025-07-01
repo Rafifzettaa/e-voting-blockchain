@@ -56,30 +56,49 @@ function showToast(msg) {
 }
 
 async function loadProposals() {
-  const list = document.getElementById("proposalList");
-  list.innerHTML = "";
+  const container = document.getElementById("proposalList");
+  const select = document.getElementById("proposalSelect");
+
+  container.innerHTML = "";
+  select.innerHTML = `<option value="">Pilih kandidat</option>`; // reset dropdown
+
   try {
     const res = await fetch("http://localhost:3001/proposals");
     const data = await res.json();
+
     for (let proposal of data.proposals) {
-      list.innerHTML += `
-        <li class="mb-1">[${proposal.index}] ${proposal.name} - ${proposal.voteCount} suara</li>
+      // 🎴 Tambahkan ke daftar dalam bentuk kartu
+      const card = document.createElement("div");
+      card.className =
+        "bg-white border rounded-xl shadow-sm p-4 hover:shadow-md transition";
+      card.innerHTML = `
+        <h3 class="font-semibold text-gray-800 text-base">[${proposal.index}] ${proposal.name}</h3>
+        <p class="text-sm text-gray-500 mt-1">🗳️ ${proposal.voteCount} suara</p>
       `;
+      container.appendChild(card);
+
+      // 🔽 Tambahkan ke dropdown select
+      const option = document.createElement("option");
+      option.value = proposal.index;
+      option.textContent = `[${proposal.index}] ${proposal.name}`;
+      select.appendChild(option);
     }
   } catch (err) {
-    list.innerHTML =
-      "<li class='text-red-600'>Gagal mengambil daftar proposal.</li>";
+    container.innerHTML = `<div class="text-red-600">Gagal mengambil daftar proposal.</div>`;
   }
 }
-
 async function vote() {
-  const index = document.getElementById("proposalIndex").value;
+  const index = document.getElementById("proposalSelect").value;
+  const button = document.querySelector("button[onclick='vote()']");
   if (!privateKey || index === "") {
-    alert("Isi private key dan index proposal");
+    alert("Silakan pilih kandidat dan login dulu.");
     return;
   }
 
   try {
+    button.disabled = true;
+    button.innerText = "⏳ Mengirim suara...";
+
     const res = await fetch("http://localhost:3001/vote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -90,13 +109,19 @@ async function vote() {
     if (data.status === "success") {
       document.getElementById("voteStatus").innerText =
         "✅ Vote berhasil: " + data.txHash;
+      button.innerText = "✅ Vote Terkirim";
+      button.disabled = true; // disable tombol setelah vote
     } else {
       document.getElementById("voteStatus").innerText =
         "❌ Gagal: " + data.message;
+      button.disabled = false;
+      button.innerText = "🗳️ Vote";
     }
   } catch (err) {
     document.getElementById("voteStatus").innerText =
-      "❌ Error koneksi ke server";
+      "❌ Gagal koneksi ke server";
+    button.disabled = false;
+    button.innerText = "🗳️ Vote";
   }
 }
 
@@ -104,8 +129,20 @@ async function getWinner() {
   try {
     const res = await fetch("http://localhost:3001/winner");
     const data = await res.json();
-    document.getElementById("winnerName").innerText =
-      "🎉 Pemenang: " + data.winner;
+    const winner = data.winner;
+
+    document.getElementById("winnerName").innerText = "🎉 Pemenang: " + winner;
+
+    // Highlight kartu pemenang
+    const cards = document.querySelectorAll("#proposalList > div");
+    for (const card of cards) {
+      const title = card.querySelector("h3")?.innerText || "";
+      if (title.includes(winner)) {
+        card.classList.add("ring-2", "ring-green-500", "scale-[1.02]");
+      } else {
+        card.classList.remove("ring-2", "ring-green-500", "scale-[1.02]");
+      }
+    }
   } catch {
     document.getElementById("winnerName").innerText = "❌ Gagal ambil pemenang";
   }

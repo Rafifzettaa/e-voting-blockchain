@@ -4,8 +4,11 @@ async function loginAdmin() {
   const pk = document.getElementById("adminPrivateKey").value.trim();
   if (!pk) return alert("Private key belum diisi!");
   privateKey = pk;
-  localStorage.setItem("adminKey", privateKey); // Simpan ke localStorage
-
+  localStorage.setItem("adminKey", btoa(privateKey));
+  const encoded = localStorage.getItem("adminKey");
+  if (encoded) {
+    privateKey = atob(encoded); // decode dari Base64
+  }
   document.getElementById("adminStatus").innerText = "✅ Login berhasil";
   document.getElementById("logoutBtn").classList.remove("hidden");
 
@@ -130,9 +133,9 @@ function startLivePolling() {
   }, 5000); // tiap 5 detik
 }
 window.addEventListener("DOMContentLoaded", async () => {
-  const savedKey = localStorage.getItem("adminKey");
-  if (savedKey) {
-    privateKey = savedKey;
+  const encoded = localStorage.getItem("adminKey");
+  if (encoded) {
+    privateKey = atob(encoded); // decode
     document.getElementById("adminPrivateKey").value = privateKey;
     document.getElementById("adminStatus").innerText =
       "✅ Login otomatis dari localStorage";
